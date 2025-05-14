@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>User Form with Tailwind</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-6">
+
+  <div class="max-w-2xl mx-auto bg-white p-6 rounded shadow">
+    <h2 class="text-2xl font-semibold mb-4">Add User</h2>
+    <div class="flex flex-col sm:flex-row gap-3 mb-4">
+      <input type="text" id="firstName" placeholder="First Name"
+        class="border border-gray-300 rounded px-4 py-2 w-full" />
+      <input type="text" id="lastName" placeholder="Last Name"
+        class="border border-gray-300 rounded px-4 py-2 w-full" />
+      <input type="text" id="designation" placeholder="Designation"
+        class="border border-gray-300 rounded px-4 py-2 w-full" />
+    </div>
+    <button onclick="addUser()"
+      class="bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600 transition">Add</button>
+
+    <table class="w-full mt-6 text-left border border-gray-300">
+      <thead class="bg-gray-200">
+        <tr>
+          <th class="px-4 py-2">First Name</th>
+          <th class="px-4 py-2">Action</th>
+        </tr>
+      </thead>
+      <tbody id="userTableBody">
+     
+      </tbody>
+    </table>
+
+    <div id="userDetailCard" class="mt-6 p-4 border rounded bg-gray-50 hidden">
+      
+    </div>
+  </div>
+
+  <script>
+    let users = [];
+
+    function addUser() {
+      const firstName = document.getElementById("firstName").value.trim();
+      const lastName = document.getElementById("lastName").value.trim();
+      const designation = document.getElementById("designation").value.trim();
+
+      if (!firstName || !lastName || !designation) {
+        alert("Please fill in all fields.");
+        return;
+      }
+
+      const user = { firstName, lastName, designation };
+      users.push(user);
+
+      const tableBody = document.getElementById("userTableBody");
+      const row = document.createElement("tr");
+
+      row.innerHTML = `
+        <td class="px-4 py-2 border">${user.firstName}</td>
+        <td class="px-4 py-2 border">
+          <button onclick="showDetails(${users.length - 1})"
+            class="bg-green-500 text-white px-4 py-1 rounded hover:bg-green-600 transition">Details</button>
+        </td>
+      `;
+
+      tableBody.appendChild(row);
+
+      document.getElementById("firstName").value = '';
+      document.getElementById("lastName").value = '';
+      document.getElementById("designation").value = '';
+    }
+
+    function showDetails(index) {
+      const user = users[index];
+      const card = document.getElementById("userDetailCard");
+
+      card.innerHTML = `
+        <h3 class="text-xl font-semibold mb-2">User Details</h3>
+        <p><strong>First Name:</strong> ${user.firstName}</p>
+        <p><strong>Last Name:</strong> ${user.lastName}</p>
+        <p><strong>Designation:</strong> ${user.designation}</p>
+      `;
+      card.classList.remove("hidden");
+    }
+  </script>
+
+</body>
+</html>
